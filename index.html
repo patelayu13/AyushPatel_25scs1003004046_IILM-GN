@@ -1,0 +1,1099 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>AI-EMF Wildlife Protection</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Google Font -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet" />
+
+  <style>
+    :root {
+      --bg-dark: #050510;
+      --accent-cyan: #00fff0;
+      --accent-pink: #ff4fbf;
+      --text-main: #f7f9ff;
+      --text-muted: #98a0b8;
+      --card-bg: rgba(15, 16, 40, 0.9);
+      --border-neon: rgba(0, 255, 240, 0.3);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: "Poppins", sans-serif;
+      background: radial-gradient(circle at top left, #1c2340 0, #050510 45%, #020209 100%);
+      color: var(--text-main);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* FLOATING PARTICLE BACKGROUND */
+    #particle-layer {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 10% 20%, rgba(0, 255, 230, 0.18), transparent 55%),
+        radial-gradient(circle at 80% 10%, rgba(255, 105, 180, 0.18), transparent 60%),
+        radial-gradient(circle at 50% 80%, rgba(0, 200, 255, 0.15), transparent 55%);
+      animation: bgPulse 12s ease-in-out infinite alternate;
+    }
+
+    @keyframes bgPulse {
+      0% {
+        filter: blur(18px);
+        opacity: 0.85;
+      }
+      100% {
+        filter: blur(30px);
+        opacity: 1;
+      }
+    }
+
+    /* NAVBAR */
+    header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 50;
+      backdrop-filter: blur(16px);
+      background: linear-gradient(
+        to right,
+        rgba(5, 5, 20, 0.92),
+        rgba(5, 5, 25, 0.85)
+      );
+      border-bottom: 1px solid rgba(0, 255, 240, 0.25);
+    }
+
+    .nav {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 2px;
+      color: var(--accent-cyan);
+    }
+
+    .logo span {
+      color: var(--accent-pink);
+    }
+
+    .nav-links a {
+      margin-left: 22px;
+      font-size: 14px;
+      color: var(--text-muted);
+      text-decoration: none;
+      position: relative;
+      transition: 0.2s ease;
+    }
+
+    .nav-links a::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: -4px;
+      width: 0%;
+      height: 2px;
+      background: linear-gradient(90deg, var(--accent-cyan), var(--accent-pink));
+      transition: width 0.25s ease;
+      border-radius: 999px;
+    }
+
+    .nav-links a:hover {
+      color: var(--accent-cyan);
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    /* LAYOUT WRAPPER */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 110px 20px 60px;
+    }
+
+    section {
+      margin-bottom: 88px;
+    }
+
+    h2.section-title {
+      font-size: 30px;
+      display: inline-flex;
+      align-items: center;
+      margin-bottom: 12px;
+      text-shadow: 0 0 18px rgba(0, 255, 240, 0.7);
+    }
+
+    h2.section-title span {
+      font-size: 14px;
+      margin-left: 10px;
+      padding: 2px 9px;
+      border-radius: 999px;
+      background: rgba(255, 79, 191, 0.14);
+      border: 1px solid rgba(255, 79, 191, 0.6);
+      color: #ffd8f7;
+    }
+
+    .section-sub {
+      font-size: 13px;
+      max-width: 700px;
+      color: var(--text-muted);
+      margin-bottom: 20px;
+    }
+
+    /* HERO SECTION */
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(0, 1.6fr);
+      gap: 40px;
+      align-items: center;
+      margin-bottom: 80px;
+    }
+
+    .hero-title {
+      font-size: 44px;
+      line-height: 1.12;
+      text-shadow: 0 0 25px rgba(0, 255, 240, 0.7);
+    }
+
+    .hero-title span {
+      color: var(--accent-cyan);
+    }
+
+    .hero-highlight {
+      color: var(--accent-pink);
+      font-weight: 600;
+    }
+
+    .hero-text {
+      margin-top: 12px;
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 540px;
+    }
+
+    .hero-buttons {
+      margin-top: 22px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .btn {
+      border: none;
+      padding: 10px 22px;
+      border-radius: 999px;
+      font-size: 14px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      color: #021015;
+      background: linear-gradient(120deg, var(--accent-cyan), #6dffe9);
+      box-shadow: 0 0 18px rgba(0, 255, 240, 0.7);
+      transition: transform 0.16s ease, box-shadow 0.16s ease;
+    }
+
+    .btn span.icon {
+      font-size: 18px;
+    }
+
+    .btn.secondary {
+      background: transparent;
+      color: var(--accent-cyan);
+      box-shadow: none;
+      border: 1px solid rgba(0, 255, 240, 0.4);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px) scale(1.03);
+      box-shadow: 0 0 26px rgba(0, 255, 240, 0.9);
+    }
+
+    .btn.secondary:hover {
+      box-shadow: 0 0 18px rgba(0, 255, 240, 0.7);
+      background: radial-gradient(circle, rgba(0, 255, 240, 0.15), transparent 55%);
+    }
+
+    /* AI ANIMATION CARD */
+    .ai-visual {
+      position: relative;
+      height: 260px;
+      border-radius: 18px;
+      background: radial-gradient(circle at top, #2d2e5e, #070716 70%);
+      overflow: hidden;
+      border: 1px solid rgba(0, 255, 240, 0.4);
+      box-shadow: 0 0 26px rgba(0, 255, 240, 0.45);
+    }
+
+    .ai-node {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      box-shadow: 0 0 18px rgba(0, 255, 240, 0.9);
+      animation: floatNode 6s ease-in-out infinite alternate;
+    }
+
+    .ai-node.pink {
+      background: var(--accent-pink);
+      box-shadow: 0 0 18px rgba(255, 79, 191, 0.9);
+    }
+
+    @keyframes floatNode {
+      0% {
+        transform: translate3d(0, 0, 0);
+      }
+      100% {
+        transform: translate3d(18px, -18px, 0);
+      }
+    }
+
+    .ai-ring {
+      position: absolute;
+      width: 140px;
+      height: 140px;
+      border-radius: 50%;
+      border: 1px dashed rgba(180, 255, 252, 0.6);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      animation: spinRing 12s linear infinite;
+    }
+
+    .ai-ring::after {
+      content: "";
+      position: absolute;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      top: -4px;
+      left: 50%;
+      transform: translateX(-50%);
+      box-shadow: 0 0 18px rgba(0, 255, 240, 0.9);
+    }
+
+    @keyframes spinRing {
+      0% {
+        transform: translate(-50%, -50%) rotate(0deg);
+      }
+      100% {
+        transform: translate(-50%, -50%) rotate(360deg);
+      }
+    }
+
+    .ai-caption {
+      position: absolute;
+      bottom: 14px;
+      left: 16px;
+      right: 16px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    /* GRID + CARDS */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 16px;
+      padding: 18px 18px 16px;
+      border: 1px solid var(--border-neon);
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.65);
+      transform: translateY(14px);
+      opacity: 0;
+      transition: transform 0.45s ease, opacity 0.45s ease, box-shadow 0.2s ease;
+    }
+
+    .card.visible {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .card:hover {
+      box-shadow: 0 0 28px rgba(0, 255, 240, 0.45);
+    }
+
+    .card-title {
+      font-size: 17px;
+      margin-bottom: 8px;
+    }
+
+    .card-text {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      padding: 2px 8px;
+      border-radius: 999px;
+      border: 1px solid rgba(0, 255, 240, 0.5);
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--accent-cyan);
+      margin-bottom: 6px;
+    }
+
+    .pill.pink {
+      border-color: rgba(255, 79, 191, 0.7);
+      color: #ffc3f0;
+    }
+
+    /* DATASET TABLE (SAMPLE) */
+    table.dataset {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 12px;
+      font-size: 11px;
+    }
+
+    table.dataset th,
+    table.dataset td {
+      border: 1px solid rgba(120, 130, 180, 0.5);
+      padding: 4px 6px;
+      text-align: left;
+    }
+
+    table.dataset th {
+      background: rgba(0, 255, 240, 0.12);
+    }
+
+    /* CODE BLOCK */
+    pre.code-block {
+      background: #070818;
+      border-radius: 10px;
+      padding: 12px;
+      margin-top: 10px;
+      overflow-x: auto;
+      font-size: 11px;
+      line-height: 1.4;
+      border: 1px solid rgba(0, 255, 240, 0.4);
+      box-shadow: 0 0 16px rgba(0, 0, 0, 0.7);
+    }
+
+    pre.code-block code {
+      font-family: "Consolas", "Fira Code", monospace;
+      color: #e6f6ff;
+    }
+
+    /* AI FORM */
+    .ai-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.3fr) minmax(0, 1.4fr);
+      gap: 18px;
+      margin-top: 10px;
+    }
+
+    .field {
+      margin-bottom: 10px;
+    }
+
+    .field label {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .field input,
+    .field select {
+      width: 100%;
+      padding: 7px 9px;
+      margin-top: 3px;
+      border-radius: 8px;
+      border: 1px solid rgba(100, 121, 190, 0.8);
+      background: #050519;
+      color: var(--text-main);
+      font-size: 12px;
+      outline: none;
+      transition: border 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .field input:focus,
+    .field select:focus {
+      border-color: var(--accent-cyan);
+      box-shadow: 0 0 12px rgba(0, 255, 240, 0.5);
+    }
+
+    .result-box {
+      margin-top: 6px;
+      padding: 12px;
+      border-radius: 12px;
+      background: #06081c;
+      border: 1px dashed rgba(155, 170, 230, 0.7);
+      min-height: 80px;
+      font-size: 12px;
+    }
+
+    .result-title {
+      font-size: 15px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .risk-low {
+      border-color: #33ff88;
+      background: rgba(0, 120, 60, 0.25);
+      box-shadow: 0 0 16px rgba(0, 255, 120, 0.6);
+    }
+
+    .risk-med {
+      border-color: #ffb547;
+      background: rgba(120, 90, 0, 0.35);
+      box-shadow: 0 0 16px rgba(255, 180, 70, 0.7);
+    }
+
+    .risk-high {
+      border-color: #ff4d6a;
+      background: rgba(120, 0, 20, 0.5);
+      box-shadow: 0 0 18px rgba(255, 80, 120, 0.9);
+    }
+
+    .pop {
+      animation: popIn 0.4s ease;
+    }
+
+    @keyframes popIn {
+      0% {
+        transform: scale(0.92);
+        opacity: 0.3;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 1;
+      }
+    }
+
+    /* MAP IFAME */
+    .map-frame {
+      width: 100%;
+      height: 260px;
+      border-radius: 12px;
+      border: none;
+      background: #050515;
+    }
+
+    footer {
+      margin-top: 30px;
+      padding: 18px 10px 10px;
+      text-align: center;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: 1fr;
+      }
+      .hero-title {
+        font-size: 30px;
+      }
+      .hero-text {
+        max-width: none;
+      }
+      .ai-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Particle BG -->
+  <div id="particle-layer"></div>
+
+  <!-- AUDIO (put files in sounds/ folder if you want) -->
+  <audio id="bgHum" src="sounds/bg_hum.mp3" loop></audio>
+  <audio id="clickSound" src="sounds/click.mp3"></audio>
+  <audio id="alertSound" src="sounds/warning.mp3"></audio>
+
+  <!-- NAVBAR -->
+  <header>
+    <div class="nav">
+      <div class="logo">AI-<span>EMF</span> WILDLIFE</div>
+      <div class="nav-links">
+        <a href="#home">Home</a>
+        <a href="#about">About</a>
+        <a href="#dataset">Dataset</a>
+        <a href="#aimodel">AI Model</a>
+        <a href="#maps">Maps</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section id="home" class="hero">
+      <div>
+        <div class="pill pink">EMF + Wildlife Mini Project</div>
+        <h1 class="hero-title">
+          AI-Powered <span>EMF Impact</span> Detection<br />
+          for <span class="hero-highlight">Wildlife Safety</span>
+        </h1>
+        <p class="hero-text">
+          A smart monitoring system that analyzes electromagnetic field (EMF) levels around wildlife habitats like
+          Corbett and Ranthambore, predicts risk using a RandomForest AI model and visualizes hotspots on interactive
+          maps.
+        </p>
+        <div class="hero-buttons">
+          <button class="btn" id="btnViewMaps">
+            <span class="icon">🛰️</span> View EMF Maps
+          </button>
+          <button class="btn secondary" id="btnTryAI">
+            <span class="icon">🤖</span> Try AI Detector
+          </button>
+        </div>
+      </div>
+
+      <!-- AI ANIMATION CARD -->
+      <div class="ai-visual card visible">
+        <div class="ai-ring"></div>
+        <div class="ai-node" style="top:20%;left:18%;animation-delay:0.1s;"></div>
+        <div class="ai-node pink" style="top:60%;left:70%;animation-delay:0.4s;"></div>
+        <div class="ai-node" style="top:35%;left:55%;animation-delay:0.7s;"></div>
+        <div class="ai-node pink" style="top:72%;left:30%;animation-delay:1.1s;"></div>
+        <div class="ai-caption">
+          Neural-style EMF nodes connected like a sensor network. Each glowing point represents a tower/wildlife
+          observation used by the RandomForest model.
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <h2 class="section-title">
+        About <span>Project Overview</span>
+      </h2>
+      <p class="section-sub">
+        The goal of this 1st-year AI/ML project is to show how electromagnetic fields from communication towers can
+        affect wildlife behavior and how AI can be used to monitor and predict risky zones.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Concept</div>
+          <div class="card-title">Why EMF + Wildlife?</div>
+          <p class="card-text">
+            Wildlife in forest and buffer zones can be exposed to EMF due to towers and power lines. This may cause
+            disorientation, migration changes and abnormal behaviour. Our system uses data + AI to mark safe vs risky
+            areas.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="pill">Scope</div>
+          <div class="card-title">What this project does</div>
+          <p class="card-text">
+            1) Use EMF & wildlife-related data for Indian locations<br />
+            2) Train a RandomForest model to classify risk (Low / Medium / High)<br />
+            3) Visualize results on maps of Corbett, Ranthambore and whole India<br />
+            4) Provide a live EMF detector interface on this website.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="pill">Tech</div>
+          <div class="card-title">Technologies used</div>
+          <p class="card-text">
+            Python, Pandas, NumPy, Scikit-Learn, RandomForestClassifier, Folium for interactive maps, HTML/CSS/JS for
+            front-end and Google Colab for running the AI notebooks.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- DATASET -->
+    <section id="dataset">
+      <h2 class="section-title">
+        Dataset <span>EMF_Wildlife_200_Rows.xlsx</span>
+      </h2>
+      <p class="section-sub">
+        The dataset used in this project is a synthetic EMF + wildlife dataset for India. Each row represents one
+        location with EMF intensity, distance from tower, wildlife species, behaviour score and risk label.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Download</div>
+          <div class="card-title">Download the Excel dataset</div>
+          <p class="card-text">
+            You can download the same dataset file that is used for training the RandomForest model and creating EMF
+            risk maps.
+          </p>
+          <button class="btn" id="btnDownload">
+            <span class="icon">⬇️</span> Download EMF_Wildlife_200_Rows.xlsx
+          </button>
+          <p class="card-text" style="margin-top:10px;font-size:11px;">
+            Place the file <b>EMF_Wildlife_200_Rows.xlsx</b> in the same folder as this HTML file so this button works.
+          </p>
+        </div>
+
+        <div class="card">
+          <div class="pill pink">Columns</div>
+          <div class="card-title">Dataset structure (sample)</div>
+          <p class="card-text">
+            Main columns in the dataset:
+          </p>
+          <ul class="card-text" style="font-size:12px;margin-top:6px;">
+            <li>Location, State</li>
+            <li>Species (Tiger, Deer, Elephant, Birds…)</li>
+            <li>EMF_Intensity(mV/m)</li>
+            <li>Distance_From_Tower(m)</li>
+            <li>Behavior_Score (0-10)</li>
+            <li>Risk_Level (Low/Medium/High)</li>
+            <li>Lat, Lon (GPS coordinates)</li>
+          </ul>
+
+          <p class="card-text" style="margin-top:8px;">Small sample (first few rows example):</p>
+          <table class="dataset">
+            <thead>
+              <tr>
+                <th>Location</th>
+                <th>State</th>
+                <th>Species</th>
+                <th>EMF (mV/m)</th>
+                <th>Dist (m)</th>
+                <th>Risk</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>Gir Forest</td>
+                <td>Gujarat</td>
+                <td>Indian Peafowl</td>
+                <td>86.44</td>
+                <td>68</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Kaziranga</td>
+                <td>Assam</td>
+                <td>Spotted Deer</td>
+                <td>66.11</td>
+                <td>1597</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td>Sanjay Gandhi NP</td>
+                <td>Maharashtra</td>
+                <td>Hornbill</td>
+                <td>197.02</td>
+                <td>1123</td>
+                <td>High</td>
+              </tr>
+              <tr>
+                <td>Kanha</td>
+                <td>Madhya Pradesh</td>
+                <td>Hornbill</td>
+                <td>61.33</td>
+                <td>59</td>
+                <td>Medium</td>
+              </tr>
+              <tr>
+                <td>Sunderbans</td>
+                <td>West Bengal</td>
+                <td>Hornbill</td>
+                <td>198.37</td>
+                <td>1413</td>
+                <td>High</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- AI MODEL -->
+    <section id="aimodel">
+      <h2 class="section-title">
+        AI Model <span>RandomForest + Live EMF Detector</span>
+      </h2>
+      <p class="section-sub">
+        Backend model is a RandomForestClassifier trained on the EMF dataset in Python. Below code blocks show how the
+        model is trained, and the live EMF detector uses similar logic in JavaScript.
+      </p>
+
+      <div class="card">
+        <div class="pill">Python Code (Training)</div>
+        <div class="card-title">RandomForest training in Google Colab</div>
+        <pre class="code-block"><code># 1. Load libraries
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestClassifier
+
+# 2. Load dataset
+data = pd.read_excel("EMF_Wildlife_200_Rows.xlsx")
+
+# 3. Select features and label
+feature_cols = [
+    "EMF_Intensity(mV/m)",
+    "Distance_From_Tower(m)",
+    "Behavior_Score"
+]
+X = data[feature_cols]
+y = data["Risk_Level"]        # Low / Medium / High
+
+# 4. Train / test split
+X_train, X_test, y_train, y_test = train_test_split(
+    X, y, test_size=0.2, random_state=42
+)
+
+# 5. Create RandomForest model
+rf_model = RandomForestClassifier(
+    n_estimators=200,
+    max_depth=8,
+    random_state=42
+)
+
+# 6. Train the model
+rf_model.fit(X_train, y_train)
+
+# 7. Evaluate
+accuracy = rf_model.score(X_test, y_test)
+print("Test Accuracy:", accuracy)</code></pre>
+      </div>
+
+      <div class="card" style="margin-top:18px;">
+        <div class="pill pink">Inference</div>
+        <div class="card-title">Predicting EMF risk from new readings</div>
+        <pre class="code-block"><code># Example feature vector for one wildlife location
+new_point = pd.DataFrame({
+    "EMF_Intensity(mV/m)": [180],
+    "Distance_From_Tower(m)": [750],
+    "Behavior_Score": [6]
+})
+
+predicted_label = rf_model.predict(new_point)[0]
+print("Predicted EMF Risk Level:", predicted_label)</code></pre>
+
+        <p class="card-text" style="margin-top:10px;">
+          The website version below uses a simple JavaScript model that copies the same logic:
+          high EMF + close tower + abnormal behaviour → High risk (red warning + sound).
+        </p>
+
+        <!-- LIVE DETECTOR -->
+        <div class="ai-layout" style="margin-top:16px;">
+          <div>
+            <div class="pill">Live EMF Detector</div>
+            <div class="field">
+              <label for="emfInput">EMF Intensity (mV/m)</label>
+              <input type="number" id="emfInput" placeholder="e.g. 180" />
+            </div>
+            <div class="field">
+              <label for="distInput">Distance from tower (m)</label>
+              <input type="number" id="distInput" placeholder="e.g. 750" />
+            </div>
+            <div class="field">
+              <label for="behInput">Behaviour score (0-10)</label>
+              <input type="number" id="behInput" placeholder="e.g. 6" />
+            </div>
+            <div class="field">
+              <label for="speciesInput">Species</label>
+              <select id="speciesInput">
+                <option>Tiger</option>
+                <option>Deer</option>
+                <option>Elephant</option>
+                <option>Birds</option>
+                <option>Other</option>
+              </select>
+            </div>
+            <button class="btn" id="btnPredict" style="margin-top:6px;">
+              <span class="icon">⚡</span> Predict Risk
+            </button>
+            <button class="btn secondary" id="btnSimulate" style="margin-top:6px;">
+              <span class="icon">📡</span> Start Live Simulation
+            </button>
+            <button class="btn secondary" id="btnStopSim" style="margin-top:6px;">
+              Stop Simulation
+            </button>
+          </div>
+
+          <div>
+            <div class="pill">Output</div>
+            <div id="resultBox" class="result-box">
+              <div id="resultTitle" class="result-title">No prediction yet</div>
+              <div id="resultDetail" class="card-text" style="margin-top:4px;font-size:12px;">
+                Enter EMF, distance and behaviour score and click <b>Predict Risk</b> to see AI output.
+                High risk will trigger a red warning with sound.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- MAPS -->
+    <section id="maps">
+      <h2 class="section-title">
+        Maps <span>Corbett • Ranthambore • India EMF Risk</span>
+      </h2>
+      <p class="section-sub">
+        Interactive maps are created using Python + Folium and hosted on your GitHub Pages.
+        Clicking the buttons will open each map in a new tab.
+      </p>
+
+      <div class="grid">
+        <div class="card">
+          <div class="pill">Corbett</div>
+          <div class="card-title">Corbett Tiger Reserve EMF Map</div>
+          <p class="card-text">
+            Shows synthetic EMF intensity and wildlife risk around Corbett Tiger Reserve (Uttarakhand).
+          </p>
+          <a
+            class="btn"
+            href="https://patelayu13.github.io/emf-wildlife-map/corbett.html"
+            target="_blank"
+            style="margin-top:10px;"
+          >
+            <span class="icon">🗺️</span> Open Corbett Map
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="pill">Ranthambore</div>
+          <div class="card-title">Ranthambore National Park EMF Map</div>
+          <p class="card-text">
+            EMF hotspots & risky towers in and around Ranthambore (Rajasthan) visualised with colored markers.
+          </p>
+          <a
+            class="btn"
+            href="https://patelayu13.github.io/emf-wildlife-map/ranthambore.html"
+            target="_blank"
+            style="margin-top:10px;"
+          >
+            <span class="icon">🗺️</span> Open Ranthambore Map
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="pill">India EMF</div>
+          <div class="card-title">India EMF Risk Map</div>
+          <p class="card-text">
+            Nationwide EMF risk zones as per synthetic dataset, highlighting high-risk wildlife areas.
+          </p>
+          <a
+            class="btn"
+            href="https://patelayu13.github.io/emf-wildlife-map/india.html"
+            target="_blank"
+            style="margin-top:10px;"
+          >
+            <span class="icon">🌏</span> Open India EMF Map
+          </a>
+        </div>
+
+        <div class="card">
+          <div class="pill pink">Extra</div>
+          <div class="card-title">India Wildlife Map (external)</div>
+          <p class="card-text">
+            Example embed: India map from OpenStreetMap. You can replace this iframe with any official GIS wildlife map
+            if available.
+          </p>
+          <iframe
+            class="map-frame"
+            src="https://www.openstreetmap.org/export/embed.html?bbox=68.0,7.0,97.0,36.0&layer=mapnik"
+            title="India Wildlife Map (placeholder)"
+          ></iframe>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      AI-EMF Wildlife Protection • Created by Ayush Patel • B.Tech IT • EMF + Wildlife Mini-Project
+    </footer>
+  </main>
+
+  <script>
+    // ---------- AUDIO HANDLING ----------
+    const bgHum = document.getElementById("bgHum");
+    const clickSound = document.getElementById("clickSound");
+    const alertSound = document.getElementById("alertSound");
+    let audioInitialized = false;
+
+    function initAudio() {
+      if (audioInitialized || !bgHum) return;
+      audioInitialized = true;
+      bgHum.volume = 0.35;
+      bgHum.play().catch(() => {});
+    }
+
+    document.addEventListener("click", () => {
+      initAudio();
+      if (clickSound) {
+        clickSound.currentTime = 0;
+        clickSound.play().catch(() => {});
+      }
+    });
+
+    // ---------- HERO BUTTONS SCROLL ----------
+    document.getElementById("btnViewMaps").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("maps").scrollIntoView({ behavior: "smooth" });
+    });
+
+    document.getElementById("btnTryAI").addEventListener("click", (e) => {
+      e.preventDefault();
+      document.getElementById("aimodel").scrollIntoView({ behavior: "smooth" });
+    });
+
+    // NAVBAR LINKS smooth scroll
+    document.querySelectorAll(".nav-links a[href^='#']").forEach((link) => {
+      link.addEventListener("click", (e) => {
+        e.preventDefault();
+        const id = link.getAttribute("href").slice(1);
+        const el = document.getElementById(id);
+        if (el) el.scrollIntoView({ behavior: "smooth" });
+      });
+    });
+
+    // ---------- CARD SCROLL ANIMATION ----------
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("visible");
+          }
+        });
+      },
+      { threshold: 0.2 }
+    );
+    document.querySelectorAll(".card").forEach((card) => observer.observe(card));
+
+    // ---------- DATASET DOWNLOAD ----------
+    document.getElementById("btnDownload").addEventListener("click", () => {
+      const a = document.createElement("a");
+      a.href = "EMF_Wildlife_200_Rows.xlsx";
+      a.download = "EMF_Wildlife_200_Rows.xlsx";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+
+    // ---------- SIMPLE JS EMF RISK MODEL ----------
+    let simInterval = null;
+
+    function computeRisk(emf, dist, beh) {
+      let score = 0;
+      score += emf / 3;
+      score += 10 - dist / 500;
+      score += beh * 2;
+      if (score < 0) score = 0;
+      if (score > 50) score = 50;
+
+      let level = "LOW";
+      if (score > 35) level = "HIGH";
+      else if (score > 22) level = "MEDIUM";
+
+      const reasons = [];
+
+      if (emf > 200) reasons.push("Very high EMF (> 200 mV/m)");
+      else if (emf > 120) reasons.push("Moderate EMF (> 120 mV/m)");
+      else reasons.push("Low EMF level");
+
+      if (dist < 500) reasons.push("Tower is very close (< 500 m)");
+      else if (dist < 1500) reasons.push("Tower at medium distance (< 1500 m)");
+      else reasons.push("Tower is far (> 1500 m)");
+
+      if (beh > 7) reasons.push("Wildlife behaviour is highly abnormal (> 7)");
+      else if (beh > 4) reasons.push("Behaviour slightly disturbed (> 4)");
+      else reasons.push("Behaviour mostly normal");
+
+      const confidence = Math.min(99, Math.max(60, Math.round(score * 2)));
+      return { level, score, reasons, confidence };
+    }
+
+    const resultBox = document.getElementById("resultBox");
+    const resultTitle = document.getElementById("resultTitle");
+    const resultDetail = document.getElementById("resultDetail");
+
+    function showRisk(out, species) {
+      resultBox.classList.remove("risk-low", "risk-med", "risk-high", "pop");
+
+      if (out.level === "HIGH") {
+        resultBox.classList.add("risk-high");
+        resultTitle.textContent = "⚠ HIGH RISK for " + species;
+        if (alertSound) {
+          alertSound.currentTime = 0;
+          alertSound.play().catch(() => {});
+        }
+      } else if (out.level === "MEDIUM") {
+        resultBox.classList.add("risk-med");
+        resultTitle.textContent = "⚠ MEDIUM RISK for " + species;
+      } else {
+        resultBox.classList.add("risk-low");
+        resultTitle.textContent = "LOW RISK for " + species;
+      }
+
+      resultDetail.innerHTML =
+        "Confidence: <b>" +
+        out.confidence +
+        "%</b><br>Score: " +
+        out.score.toFixed(1) +
+        "<br>Reasons:<br>- " +
+        out.reasons.join("<br>- ");
+
+      void resultBox.offsetWidth;
+      resultBox.classList.add("pop");
+    }
+
+    document.getElementById("btnPredict").addEventListener("click", () => {
+      const emf = Number(document.getElementById("emfInput").value || 0);
+      const dist = Number(document.getElementById("distInput").value || 0);
+      const beh = Number(document.getElementById("behInput").value || 0);
+      const species = document.getElementById("speciesInput").value || "wildlife";
+
+      const out = computeRisk(emf, dist, beh);
+      showRisk(out, species);
+    });
+
+    document.getElementById("btnSimulate").addEventListener("click", () => {
+      if (simInterval) return;
+      simInterval = setInterval(() => {
+        const emf = Math.round(Math.random() * 280);
+        const dist = Math.round(Math.random() * 4000);
+        const beh = Math.round(Math.random() * 10);
+        document.getElementById("emfInput").value = emf;
+        document.getElementById("distInput").value = dist;
+        document.getElementById("behInput").value = beh;
+        const species = document.getElementById("speciesInput").value || "wildlife";
+        const out = computeRisk(emf, dist, beh);
+        showRisk(out, species);
+      }, 2000);
+    });
+
+    document.getElementById("btnStopSim").addEventListener("click", () => {
+      if (simInterval) {
+        clearInterval(simInterval);
+        simInterval = null;
+      }
+    });
+  </script>
+</body>
+</html>
